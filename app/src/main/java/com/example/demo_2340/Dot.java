@@ -14,13 +14,18 @@ public class Dot {
         this.y = y;
         this.radius = radius;
         this.isVisible = true;
-
+        this.visibleStartTime = 0;
         // TODO Record the time when the dot becomes visible
 
     }
 
     public boolean isExpired() {
         // TODO Check if the dot has exceeded its max lifetime
+        if (visibleStartTime < MAX_LIFETIME) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public float getX() {
