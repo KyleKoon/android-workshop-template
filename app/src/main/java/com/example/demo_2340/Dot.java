@@ -1,7 +1,6 @@
 package com.example.demo_2340;
 
 
-
 public class Dot {
     private float x, y;
     private int radius;
@@ -14,13 +13,11 @@ public class Dot {
         this.y = y;
         this.radius = radius;
         this.isVisible = true;
-
-        // TODO Record the time when the dot becomes visible
-
+        this.visibleStartTime = System.currentTimeMillis();
     }
 
     public boolean isExpired() {
-        // TODO Check if the dot has exceeded its max lifetime
+        return (System.currentTimeMillis() - this.visibleStartTime) > MAX_LIFETIME;
     }
 
     public float getX() {

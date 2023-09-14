@@ -79,11 +79,33 @@ public class GameActivity extends AppCompatActivity {
     // Handle key events to move the player
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO logic to move the player (remember to check collisions)
+        float x = playerView.getX();
+        float y = playerView.getY();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_W:
+                playerView.updatePosition(x, y-10);
+                break;
+            case KeyEvent.KEYCODE_A:
+                playerView.updatePosition(x-10, y);
+                break;
+            case KeyEvent.KEYCODE_S:
+                playerView.updatePosition(x, y+10);
+                break;
+            case KeyEvent.KEYCODE_D:
+                playerView.updatePosition(x+10, y);
+                break;
+        }
+        checkCollisions();
+        return true;
     }
 
     private void initializeDots() {
-        // TODO Create and add dots with random positions
+        for (int i = 0; i < dotsToWin; i++) {
+            float x = random.nextInt(screenWidth);
+            float y = random.nextInt(screenHeight);
+            Dot dot = new Dot(x, y, 50);
+            dots.add(dot);
+        }
     }
 
     /*
@@ -99,7 +121,16 @@ public class GameActivity extends AppCompatActivity {
 
     // Maintains 20 dots on screen
     private void respawnDotsIfNeeded() {
-        // TODO: if dots drop below 20, respawn dots
+        int numVisibleDots = 0;
+        for (int i = 0; i < dots.size(); i++) {
+            Dot dot = dots.get(i);
+            if (dot.isVisible()) {
+                numVisibleDots++;
+            }
+        }
+        if (numVisibleDots < 20) {
+            respawnDot();
+        }
     }
 
     // Recreates the dots. Respawn mechanic
@@ -123,8 +154,8 @@ public class GameActivity extends AppCompatActivity {
                 if (dotCount >= dotsToWin) {
                     launchGameWinActivity();
                 }
-            } else if (dot.isExpired()) { // TODO: Checks if dots have expired.
-                
+            } else if (dot.isExpired()) {
+                respawnDot();
             }
         }
     }
